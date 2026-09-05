@@ -1,0 +1,25 @@
+{
+  "name": "phonebook-backend",
+  "version": "1.0.0",
+  "description": "phonebook-backend",
+  "homepage": "https://github.com/fros25/phonebook-backend#readme",
+  "bugs": {
+    "url": "https://github.com/fros25/phonebook-backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fros25/phonebook-backend.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

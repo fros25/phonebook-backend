@@ -1,15 +1,16 @@
 const express = require("express");
-const morgan = require('morgan');
-const cors = require('cors');
+const morgan = require("morgan");
+const cors = require("cors");
 
 const app = express();
 
 app.use(express.json());
 
-app.use(morgan('combined'));
+app.use(morgan("combined"));
 
 app.use(cors());
 
+app.use(express.static("dist"));
 
 let persons = [
   {
@@ -87,7 +88,6 @@ app.post("/api/persons", (request, response) => {
   const body = request.body;
 
   console.log(request.body);
-  
 
   if (!body.name || !body.number) {
     return response.status(400).json({

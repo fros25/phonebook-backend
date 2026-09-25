@@ -7,6 +7,8 @@ const Person = require("./models/person");
 
 const app = express();
 
+let persons = [];
+
 app.use(express.json());
 
 app.use(morgan("combined"));
@@ -75,16 +77,29 @@ app.get("/info", (request, response) => {
 });
 
 app.get("/api/persons/:id", (request, response) => {
-  const id = request.params.id;
-  const person = persons.find((person) => person.id === id);
+  Person.findById(request.params.id)
+    .then((person) => {
+      if (person) {
+      response.json(person);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      console.log(error.message)
+      response.status(400).end();
+    });
+  // const id = request.params.id;
+  // const person = persons.find((person) => person.id === id);
 
-  console.log(person);
+  // console.log(person);
 
-  if (person) {
-    response.json(person);
-  } else {
-    response.status(404).end();
-  }
+  // if (person) {
+  //   response.json(person);
+  // } else {
+  //   response.status(404).end();
+  // }
 });
 
 app.delete("/api/persons/:id", (request, response) => {
@@ -99,7 +114,7 @@ app.delete("/api/persons/:id", (request, response) => {
 //   return String(maxId + 1);
 // };
 
-const generateId = () => String(Math.floor(Math.random() * 1000000));
+// const generateId = () => String(Math.floor(Math.random() * 1000000));
 
 const isDuplicateName = (name) => {
   const names = persons.map((p) => p.name);
@@ -123,15 +138,18 @@ app.post("/api/persons", (request, response) => {
     });
   }
 
-  const person = {
-    id: generateId(),
+  const person = new Person({
+    // id: generateId(),
     name: body.name,
     number: body.number,
-  };
+  });
 
-  persons = persons.concat(person);
   console.log(person);
-  response.json(person);
+
+  person.save().then((savedPerson) => {
+    response.json(savedPerson);
+  });
+  // persons = persons.concat(person);
 });
 
 const PORT = process.env.PORT;
